@@ -25,29 +25,48 @@
     </div>
     <script>
 var unityInstance = null;
-
-    // This will initialize the Unity WebGL content
-    var buildUrl = "Build"; // or wherever your build folder is
-    var loaderUrl = buildUrl + "/yourBuildName.loader.js";
-    var config = {
-        dataUrl: buildUrl + "/yourBuildName.data",
-        frameworkUrl: buildUrl + "/yourBuildName.framework.js",
-        codeUrl: buildUrl + "/yourBuildName.wasm",
-        streamingAssetsUrl: "StreamingAssets",
+      var buildUrl = "Build"; // Path to your Unity build folder
+      var loaderUrl = buildUrl + "/yourBuildName.loader.js"; // Correct path to loader.js
+      var config = {
+        dataUrl: buildUrl + "/yourBuildName.data", // Correct path to .data file
+        frameworkUrl: buildUrl + "/yourBuildName.framework.js", // Correct path to .framework.js file
+        codeUrl: buildUrl + "/yourBuildName.wasm", // Correct path to .wasm file
+        streamingAssetsUrl: "StreamingAssets", // Path for Unity StreamingAssets
         companyName: "YourCompany",
         productName: "YourProduct",
         productVersion: "1.0",
-        onProgress: function (progress) {
-            console.log("Loading progress: " + progress);
+        onProgress: function(progress) {
+          console.log("Loading progress: " + progress);
         }
-    };
+      };
 
-    // Create Unity instance
-    createUnityInstance(document.getElementById("unityContainer"), config).then(function (instance) {
-        unityInstance = instance;
-    }).catch(function (message) {
-        console.error(message);
-    });      var container = document.querySelector("#unity-container");
+      // Function to create Unity instance after loading the necessary scripts
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = function() {
+        createUnityInstance(document.getElementById("unity-container"), config).then(function(instance) {
+          unityInstance = instance;
+          // On Unity instance load, you can modify additional logic such as fullscreen
+          document.getElementById("unity-fullscreen-button").onclick = function() {
+            unityInstance.SetFullscreen(1);
+          };
+          document.getElementById("unity-loading-bar").style.display = "none"; // Hide loading bar after initialization
+        }).catch(function(message) {
+          console.error(message);
+        });
+      };
+
+      document.body.appendChild(script);
+
+      // Optional: Mobile device handling for Unity WebGL
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.getElementById("unity-container").className = "unity-mobile";
+        document.getElementById("unity-canvas").className = "unity-mobile";
+      }      var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
