@@ -24,8 +24,30 @@
       </div>
     </div>
     <script>
-var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Webgl.json");
-      var container = document.querySelector("#unity-container");
+var unityInstance = null;
+
+    // This will initialize the Unity WebGL content
+    var buildUrl = "Build"; // or wherever your build folder is
+    var loaderUrl = buildUrl + "/yourBuildName.loader.js";
+    var config = {
+        dataUrl: buildUrl + "/yourBuildName.data",
+        frameworkUrl: buildUrl + "/yourBuildName.framework.js",
+        codeUrl: buildUrl + "/yourBuildName.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "YourCompany",
+        productName: "YourProduct",
+        productVersion: "1.0",
+        onProgress: function (progress) {
+            console.log("Loading progress: " + progress);
+        }
+    };
+
+    // Create Unity instance
+    createUnityInstance(document.getElementById("unityContainer"), config).then(function (instance) {
+        unityInstance = instance;
+    }).catch(function (message) {
+        console.error(message);
+    });      var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
