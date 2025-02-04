@@ -24,53 +24,8 @@
       </div>
     </div>
     <script>
-var unityInstance = null;
-      var buildUrl = "Build"; // Path to your Unity build folder
-      var loaderUrl = buildUrl + "/Webgl.loader.js"; // Correct path to loader.js
-      var config = {
-        dataUrl: buildUrl + "/Webgl.data", // Correct path to .data file
-        frameworkUrl: buildUrl + "/Webgl.framework.js", // Correct path to .framework.js file
-        codeUrl: buildUrl + "/Webgl.wasm", // Correct path to .wasm file
-        streamingAssetsUrl: "StreamingAssets", // Path for Unity StreamingAssets
-        companyName: "YourCompany",
-        productName: "YourProduct",
-        productVersion: "1.0",
-        onProgress: function(progress) {
-          console.log("Loading progress: " + progress);
-        }
-      };
-
-      // Function to create Unity instance after loading the necessary scripts
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = function() {
-        createUnityInstance(document.getElementById("unity-container"), config).then(function(instance) {
-          unityInstance = instance;
-          // On Unity instance load, you can modify additional logic such as fullscreen
-          document.getElementById("unity-fullscreen-button").onclick = function() {
-            unityInstance.SetFullscreen(1);
-          };
-          document.getElementById("unity-loading-bar").style.display = "none"; // Hide loading bar after initialization
-        }).catch(function(message) {
-          console.error(message);
-        });
-      };
-
-      document.body.appendChild(script);
-
-      // Optional: Mobile device handling for Unity WebGL
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        document.getElementById("unity-container").className = "unity-mobile";
-        document.getElementById("unity-canvas").className = "unity-mobile";
-      }      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var container = document.querySelector("#unity-container");
+           var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
 
       // Shows a temporary message banner/ribbon for a few seconds, or
